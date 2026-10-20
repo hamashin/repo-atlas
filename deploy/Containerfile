@@ -1,0 +1,28 @@
+FROM docker.io/library/python:3.13-slim-bookworm
+
+ARG GITLEAKS_VERSION
+ARG GITLEAKS_SHA256
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git openssh-client graphviz fonts-noto-cjk tzdata curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN test -n "${GITLEAKS_VERSION}" && test -n "${GITLEAKS_SHA256}" \
+ && curl -fsSL -o /tmp/gitleaks.tar.gz \
+      "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+ && echo "${GITLEAKS_SHA256}  /tmp/gitleaks.tar.gz" | sha256sum -c - \
+ && tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks \
+ && rm /tmp/gitleaks.tar.gz
+
+WORKDIR /app
+COPY requirements.txt requirements-dev.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ ./src/
+COPY templates/ ./templates/
+COPY prompts/ ./prompts/
+COPY migrations/ ./migrations/
+COPY tests/ ./tests/
+
+ENV PYTHONPATH=/app/src PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+ENTRYPOINT ["python", "-m", "atlas"]
+CMD ["run"]

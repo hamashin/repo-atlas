@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.sample
+*.pem
+*.key
+*_rsa
+*_ed25519
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+config/repos.yaml

@@ -1,0 +1,11 @@
+# install.sh が生成する。直接編集せず .env を変えて install.sh を再実行すること。
+[Unit]
+Description=repo-atlas の定期実行
+
+[Timer]
+OnCalendar=@SCHEDULE_ONCALENDAR@
+Persistent=true
+Unit=repo-atlas.service
+
+[Install]
+WantedBy=timers.target
