@@ -150,6 +150,7 @@ def test_backlog_is_carried_over_with_minimum_progress(tmp_path, remote):
     llm = FakeLLM()
     report = _pipeline(settings, gh, llm).run()
     assert len(llm.analyzed) == 1 and report.has_backlog and len(report.deferred) == 2
+    assert not report.needs_notice()
 
     for _ in range(2):
         _pipeline(settings, gh, FakeLLM()).run()

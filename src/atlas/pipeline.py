@@ -57,8 +57,10 @@ class RunReport:
         return bool(self.errors)
 
     def needs_notice(self) -> bool:
-        # 持ち越しだけなら続きを自動実行するので通知しない
-        return self.pushed or bool(self.blocked or self.errors or self.notes)
+        # エラー・公開見送りは都度通知。持ち越しが残る途中の実行では、更新の通知を最後の実行まで控える
+        if self.blocked or self.errors or self.notes:
+            return True
+        return self.pushed and not self.has_backlog
 
     def message(self, dry_run: bool) -> str:
         head = "repo-atlas: 更新しました" if self.pushed else "repo-atlas: 実行結果"
@@ -356,4 +358,9 @@ class Pipeline:
             f"(追加 {len(report.added)} / 更新 {len(report.updated)} / 削除 {len(report.removed)})"
         )
         report.pushed = self.workspace.commit_and_push(message, self.s.dry_run)
-        self._log.info("push: %s", "あり" if report.pushed else "変更なし")
+        if not report.pushed:
+            self._log.info("公開物の変更なし")
+        elif self.s.dry_run:
+            self._log.info("公開物の変更あり (DRY_RUN のため push せず)")
+        else:
+            self._log.info("main に push しました")

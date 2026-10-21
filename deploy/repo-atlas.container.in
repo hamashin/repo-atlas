@@ -14,6 +14,8 @@ Volume=@CONFIG_DIR@/repos.yaml:/config/repos.yaml:ro,Z
 Volume=@CONFIG_DIR@/deploy_key:/run/secrets/deploy_key:ro,Z
 Volume=@CONFIG_DIR@/github_known_hosts:/run/secrets/known_hosts:ro,Z
 Exec=run
+# ログを journald に 1 回だけ出す
+LogDriver=passthrough
 
 [Service]
 Type=oneshot
