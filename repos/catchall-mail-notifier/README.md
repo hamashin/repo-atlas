@@ -9,7 +9,7 @@
 ## 更新情報
 
 - 最終更新日: 2026-10-14
-- 最後にマージされた改修: 2026-10-14 Cloudflare Email Routing の catch-all 受信・Slack 通知 Worker を追加
+- 最後にマージされた改修: 2026-10-14 catch-all 受信と Slack 通知を行う Worker を追加
 
 ---
 

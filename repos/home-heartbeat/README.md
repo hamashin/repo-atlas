@@ -9,7 +9,7 @@
 ## 更新情報
 
 - 最終更新日: 2026-10-20
-- 最後にマージされた改修: 2026-10-20 Healthchecks.io による push 型死活監視 home-heartbeat を追加
+- 最後にマージされた改修: 2026-10-20 Healthchecks.io による push 型死活監視機能を追加
 
 ---
 

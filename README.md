@@ -15,32 +15,32 @@ hamashin の GitHub リポジトリ (大半は非公開) が、それぞれ何�
 
 ## リポジトリ一覧
 
-23 件 (最終生成: 2026-10-21 11:31 JST)
+23 件 (最終生成: 2026-10-21 11:41 JST)
 
 | リポジトリ | 概要 | 最終更新日 | 最後にマージされた改修 |
 |---|---|---|---|
-| [repo-atlas](repos/repo-atlas/) 🔒 | GitHubリポジトリのソースを解析し、機密情報を除去した概要と構成図を毎日自動生成・公開するツール。 | 2026-10-21 | 2026-10-21 ログの重複、DRY_RUN時の表示、続き実行中の通知を修正 |
+| [repo-atlas](repos/repo-atlas/) 🔒 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-10-21 | 2026-10-21 ログの重複、DRY_RUN時の表示、続き実行中の通知を修正 |
 | [auto-remediator](repos/auto-remediator/) 🔒 | Prometheus アラートを契機にローカル LLM で自動調査し、Slack 承認を経て復旧する仕組み。 | 2026-10-21 | 2026-10-21 SSH証明書有効期限の監視メトリクスとアラートを追加 |
-| [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成を自動収集し、可視化されたネットワーク図と詳細な機器一覧を生成するツールです。 | 2026-10-21 | 2026-10-21 netmap: 構成変更を検出 (2026-10-21 04:01 JST) |
-| [home-heartbeat](repos/home-heartbeat/) 🔒 | 自宅サーバの死活監視を、外部サービスへの定期送信のみで実現する。受信ポートを開けずにダウンを検知できる。 | 2026-10-20 | 2026-10-20 Healthchecks.io による push 型死活監視 home-heartbeat を追加 |
-| [homelab-teleport](repos/homelab-teleport/) 🔒 | 自宅環境のSSH接続をTeleportの短命証明書認証に置き換え、固定鍵のリスクを低減する。 | 2026-10-19 | 2026-10-19 Ver 20261019155240 |
-| [netmap](repos/netmap/) 🔒 | LAN内の機器情報をSSH・SNMP等で自動収集し、構成図と機器一覧を定期生成するツール。 | 2026-10-19 | 2026-10-19 tbot を 18.11.4 に更新 (Teleport サーバと揃える) |
-| [homelab-siem](repos/homelab-siem/) 🔒 | 自宅環境のログをWazuhで集約し、ローカルLLMで分析してSlackに通知するSIEM基盤。 | 2026-10-18 | 2026-10-18 Dashboard: http (80) から https への転送を追加 (nginx のコンテナ siem-redirect、LAN のみ許可) |
-| [camrec](repos/camrec/) 🔒 | 監視カメラの映像をブラウザでリアルタイム表示し、指定カメラの録画データをNASへ自動保存するシステム。 | 2026-10-15 | 2026-06-22 atom cam系リレーがハングして再試行しなくなる不具合を修正 |
-| [catchall-mail-notifier](repos/catchall-mail-notifier/) 🔒 | 独自ドメイン宛のメールを事前設定なしで受信し、Slack通知や管理者への転送を自動化するCloudflare Email Workerです。 | 2026-10-14 | 2026-10-14 Cloudflare Email Routing の catch-all 受信・Slack 通知 Worker を追加 |
-| [stackchan-zundamon](repos/stackchan-zundamon/) 🔒 | PrometheusアラートとSlack投稿を、M5StackデバイスがVOICEVOX音声で読み上げるシステム。 | 2026-10-14 | 2026-10-13 M5Stack Basic を Wi-Fi 単体で動くようにする |
-| [ascon_at08](repos/ascon_at08/) 🔒 | ASCON AT-08 タブレットで Ubuntu を安定動作させるためのブートローダ置換と画面表示修正スクリプト集。 | 2026-10-12 | 2026-10-06 起動メディア作成からセットアップ完了までの手順記録を追加 |
-| [claude-diary-pages](repos/claude-diary-pages/) 🔒 | Claude Code による開発セッションのログを Markdown 形式で保存し、静的サイトジェネレーターで検索可能な日記サイトとして公開するリポジトリです。 | 2026-09-29 | 2026-09-29 diary: 2026-09-29 |
-| [iptvrec](repos/iptvrec/) 🔒 | M3UリストからIPTVをブラウザで視聴・録画し、EPG連携でスケジュール管理するWebアプリ。 | 2026-09-04 | 2026-03-05 docs: 画像付き操作マニュアルをREADME.mdに追加 |
-| [kendo-keychain](repos/kendo-keychain/) 🔒 | 剣道垂ネームをモチーフにした3Dプリント用キーホルダーを、Web入力から3MFデータとして自動生成するシステム。 | 2026-06-25 | 2026-06-25 Ver1.0: 複数書体対応・印刷品質改善・3Dプレビューのフォント反映 |
-| [motorocycle-data](repos/motorocycle-data/) 🔒 | 複数台のバイクに関する車両情報やETC車載器の詳細をMarkdown形式で整理・保管するためのリポジトリです。 | 2026-05-20 | 2026-05-20 Add files via upload |
-| [chime2slack](repos/chime2slack/) 🔒 | ドアホンの点灯を検知してカメラ画像を撮影し、Slackに通知するシステム。 | 2026-02-27 | 2026-02-27 Fix 20260227 |
-| [camera_viewer](repos/camera_viewer/) 🔒 | RTSP対応カメラ4台の映像をHLS変換し、ブラウザで2×2グリッド表示する監視システム。 | 2025-12-12 | 2025-12-12 Fix markdown link formatting in README.md |
-| [aws_utils_scripts](repos/aws_utils_scripts/) 🔒 | AWS環境の保守・監視を効率化するため、アラーム集計やRDSスナップショット検証、設定値のドキュメント化を行うスクリプト群。 | 2025-12-08 | 2025-12-08 Update email addresses in sendmail |
-| [wifi-watchdog](repos/wifi-watchdog/) 🔒 | ラズパイ上のWi-Fi接続状態を監視し、連続失敗時に自動で無線インターフェースを再起動する仕組みを提供します。 | 2025-09-10 | 2025-09-10 Update README.md |
-| [docker-memo](repos/docker-memo/) 🔒 | Apache Tomcat 9 を Java 21 環境で実行するための Docker イメージを構築し、Web アプリケーションのデプロイ基盤を提供する。 | 2025-06-25 | 2025-06-25 add: memo files |
-| [ansible_trashbox](repos/ansible_trashbox/) 🔒 | Raspberry PiやLinuxサーバーの初期設定、更新、監視エージェント導入をAnsibleで自動化するプレイブック集。 | 2024-03-26 | 2024-03-26 1st commit |
-| [aws_utils_lambda](repos/aws_utils_lambda/) 🔒 | AWS環境の監視・保守・デプロイを支援するLambda関数群。アラート通知やDB操作、CI/CD承認を自動化し運用負荷を軽減する。 | 2024-03-26 | 2024-03-26 add lambda |
-| [cloudformation-util-master](repos/cloudformation-util-master/) 🔒 | AWS環境の構築と運用効率化を支援するCloudFormationテンプレート集。VPC設計からコスト削減、ログ管理、通知までを標準化し、複数プロジェクトで再利用可能にする。 | 2024-03-26 | 2024-03-26 1st commit |
+| [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成を自動収集し、可視化されたネットワーク図と詳細な機器一覧を生成するツールです。 | 2026-10-21 | 2026-10-21 netmapの構成変更検出機能を追加 |
+| [home-heartbeat](repos/home-heartbeat/) 🔒 | 自宅サーバの死活監視を、外部サービスへの定期送信のみで実現する。受信ポートを開けずにダウンを検知できる。 | 2026-10-20 | 2026-10-20 Healthchecks.io による push 型死活監視機能を追加 |
+| [homelab-teleport](repos/homelab-teleport/) 🔒 | 自宅環境のSSH接続をTeleportの短命証明書認証に置き換え、固定鍵のリスクを低減する。 | 2026-10-19 | 2026-10-19 バージョンを20261019155240に更新 |
+| [netmap](repos/netmap/) 🔒 | LAN内の機器情報をSSH・SNMP等で自動収集し、構成図と機器一覧を定期生成するツール。 | 2026-10-19 | 2026-10-19 tbot を 18.11.4 に更新 |
+| [homelab-siem](repos/homelab-siem/) 🔒 | 自宅環境のログをWazuhで集約し、ローカルLLMで分析してSlackに通知するSIEM基盤。 | 2026-10-18 | 2026-10-18 HTTPからHTTPSへの転送設定を追加 |
+| [camrec](repos/camrec/) 🔒 | 監視カメラの映像をブラウザでリアルタイム表示し、指定カメラの録画データをNASへ自動保存するシステム。 | 2026-10-15 | 2026-06-22 RTSPリレーのハング防止にタイムアウトを追加 |
+| [catchall-mail-notifier](repos/catchall-mail-notifier/) 🔒 | 独自ドメイン宛のメールを事前設定なしで受信し、Slack通知や管理者への転送を自動化するCloudflare Email Workerです。 | 2026-10-14 | 2026-10-14 catch-all 受信と Slack 通知を行う Worker を追加 |
+| [stackchan-zundamon](repos/stackchan-zundamon/) 🔒 | PrometheusアラートとSlack投稿を、M5StackデバイスがVOICEVOX音声で読み上げるシステム。 | 2026-10-14 | 2026-10-13 M5Stack BasicのWi-Fi単体動作と設定埋め込みを追加 |
+| [ascon_at08](repos/ascon_at08/) 🔒 | ASCON AT-08 タブレットで Ubuntu を安定動作させるためのブートローダ置換と画面表示修正スクリプト集。 | 2026-10-12 | 2026-10-06 セットアップ手順の記録を追加 |
+| [claude-diary-pages](repos/claude-diary-pages/) 🔒 | Claude Code による開発セッションのログを Markdown 形式で保存し、静的サイトジェネレーターで検索可能な日記サイトとして公開するリポジトリです。 | 2026-09-29 | 2026-09-29 2026-09-29 の日記を追加 |
+| [iptvrec](repos/iptvrec/) 🔒 | M3UリストからIPTVをブラウザで視聴・録画し、EPG連携でスケジュール管理するWebアプリ。 | 2026-09-04 | 2026-03-05 READMEに画像付き操作マニュアルを追加 |
+| [kendo-keychain](repos/kendo-keychain/) 🔒 | 剣道垂ネームをモチーフにした3Dプリント用キーホルダーを、Web入力から3MFデータとして自動生成するシステム。 | 2026-06-25 | 2026-06-25 複数書体対応、印刷品質改善、3Dプレビューのフォント反映を追加 |
+| [motorocycle-data](repos/motorocycle-data/) 🔒 | 複数台のバイクに関する車両情報やETC車載器の詳細をMarkdown形式で整理・保管するためのリポジトリです。 | 2026-05-20 | 2026-05-20 ファイルをアップロード |
+| [chime2slack](repos/chime2slack/) 🔒 | ドアホンの点灯を検知してカメラ画像を撮影し、Slackに通知するシステム。 | 2026-02-27 | 2026-02-27 音声通知を廃止し、ファイルアップロードAPIに変更 |
+| [camera_viewer](repos/camera_viewer/) 🔒 | RTSP対応カメラ4台の映像をHLS変換し、ブラウザで2×2グリッド表示する監視システム。 | 2025-12-12 | 2025-12-12 READMEのMarkdownリンク形式を修正 |
+| [aws_utils_scripts](repos/aws_utils_scripts/) 🔒 | AWS環境の保守・監視を効率化するため、アラーム集計やRDSスナップショット検証、設定値のドキュメント化を行うスクリプト群。 | 2025-12-08 | 2025-12-08 sendmailのメールアドレス設定を更新 |
+| [wifi-watchdog](repos/wifi-watchdog/) 🔒 | ラズパイ上のWi-Fi接続状態を監視し、連続失敗時に自動で無線インターフェースを再起動する仕組みを提供します。 | 2025-09-10 | 2025-09-10 READMEにインストール手順を追加 |
+| [docker-memo](repos/docker-memo/) 🔒 | Apache Tomcat 9 を Java 21 環境で実行するための Docker イメージを構築し、Web アプリケーションのデプロイ基盤を提供する。 | 2025-06-25 | 2025-06-25 メモファイルとTomcatコンテナ設定を追加 |
+| [ansible_trashbox](repos/ansible_trashbox/) 🔒 | Raspberry PiやLinuxサーバーの初期設定、更新、監視エージェント導入をAnsibleで自動化するプレイブック集。 | 2024-03-26 | 2024-03-26 初期コミットを追加 |
+| [aws_utils_lambda](repos/aws_utils_lambda/) 🔒 | AWS環境の監視・保守・デプロイを支援するLambda関数群。アラート通知やDB操作、CI/CD承認を自動化し運用負荷を軽減する。 | 2024-03-26 | 2024-03-26 Lambda関数を追加 |
+| [cloudformation-util-master](repos/cloudformation-util-master/) 🔒 | AWS環境の構築と運用効率化を支援するCloudFormationテンプレート集。VPC設計からコスト削減、ログ管理、通知までを標準化し、複数プロジェクトで再利用可能にする。 | 2024-03-26 | 2024-03-26 CloudFormation用ユーティリティの初期コミットを追加 |
 
 🔒 非公開 / 🌐 公開 / 🗄️ アーカイブ済み

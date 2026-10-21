@@ -9,7 +9,7 @@ RTSP対応カメラ4台の映像をHLS変換し、ブラウザで2×2グリッ�
 ## 更新情報
 
 - 最終更新日: 2025-12-12
-- 最後にマージされた改修: 2025-12-12 Fix markdown link formatting in README.md
+- 最後にマージされた改修: 2025-12-12 READMEのMarkdownリンク形式を修正
 
 ---
 
