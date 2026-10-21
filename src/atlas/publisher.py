@@ -70,6 +70,13 @@ class AtlasWorkspace:
         self._git("reset", "--hard", f"origin/{self._branch}")
         self._git("clean", "-fdx", "--", INDEX_FILE, REPOS_DIR)
 
+    def last_code_commit(self) -> str | None:
+        """生成物 (README.md と repos/) 以外が最後に変わったコミット。"""
+        out = self._git(
+            "log", "-1", "--format=%H", "--", ".", f":(exclude){INDEX_FILE}", f":(exclude){REPOS_DIR}"
+        ).strip()
+        return out or None
+
     def check_remote(self) -> None:
         self._git("ls-remote", "--heads", self._ssh_url, self._branch, cwd=Path("/"))
 

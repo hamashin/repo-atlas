@@ -35,6 +35,9 @@ FAKE_AWS = "AK" + "IA" + "ABCDEFGHIJKLMNOP"
         ("camera.local を見る", "local_hostname"),
         ("router.home.arpa", "local_hostname"),
         ("NAS01 に退避", "deny_term"),
+        ("arn:aws:sns:ap-northeast-1:123456789012:alerts", "aws_arn"),
+        ("AccountId: 123456789012", "aws_account_id"),
+        ("AWS アカウント 123456789012 で運用", "aws_account_id"),
         ("key Zx9Qw8Er7Ty6Ui5Op4As3Df2Gh1Jk0LmNbVcXz12", "high_entropy"),
     ],
 )
@@ -56,6 +59,7 @@ def test_detects_and_masks(sanitizer, text, kind):
         "token=[SECRET]",
         "公開リポジトリ hamashin/repo-atlas",
         "SHA は 3f2a9c1 です",
+        "バージョン 202610191552 を作成",
     ],
 )
 def test_keeps_harmless_text(sanitizer, text):
