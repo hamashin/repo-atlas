@@ -171,6 +171,9 @@ class Pipeline:
     def _process(self, repo: RepoMeta, level: str, budget: Budget, report: RunReport) -> IndexEntry:
         prev = self.store.get(repo.name)
         head = self.github.head_sha(repo)
+        if repo.full_name.lower() == self.s.atlas_repo.lower():
+            # 自分自身は bot の push で毎回 HEAD が変わるため、生成物以外の最終コミットで判定する
+            head = self.workspace.last_code_commit() or head
         analysis = prev.analysis if prev else None
         analyzed_sha = prev.head_sha if prev else None
         version = prev.generator_version if prev else "0"

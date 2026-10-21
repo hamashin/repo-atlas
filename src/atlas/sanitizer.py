@@ -107,6 +107,12 @@ class Sanitizer:
             _Rule("slack_token", re.compile(r"\bxox[abposr]-[A-Za-z0-9-]{10,}"), _const("[SECRET]")),
             _Rule("webhook_url", re.compile(r"https://hooks\.slack\.com/[^\s\"'<>)]+"), _const("[SECRET]")),
             _Rule("aws_key", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b"), _const("[SECRET]")),
+            _Rule("aws_arn", re.compile(r"\barn:aws[a-z-]*:[a-z0-9-]*:[a-z0-9-]*:\d{12}:[^\s\"'<>]+"), _const("[ARN]")),
+            _Rule(
+                "aws_account_id",
+                re.compile(r"(?i)((?:account|アカウント|owner)[^\n\d]{0,30}?)(?<!\d)\d{12}(?!\d)"),
+                lambda m: f"{m.group(1)}[ACCOUNT_ID]",
+            ),
             _Rule("jwt", re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}"), _const("[SECRET]")),
             _Rule(
                 "secret_assignment",

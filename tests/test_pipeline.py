@@ -87,6 +87,7 @@ def remote(tmp_path):
     seed = tmp_path / "seed"
     subprocess.run(["git", "clone", "-q", str(remote), str(seed)], check=True)
     (seed / "README.md").write_text("init\n")
+    (seed / "install.sh").write_text("echo\n")
     subprocess.run(["git", "-C", str(seed), "add", "."], check=True)
     subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@example.com", "-C", str(seed),
                     "commit", "-q", "-m", "init"], check=True)
@@ -180,6 +181,16 @@ def test_deleted_repo_page_is_removed(tmp_path, remote):
     report = _pipeline(_settings(tmp_path, remote), gh, FakeLLM()).run()
     assert report.removed == ["gone"]
     assert _remote_file(remote, "repos/gone/README.md") == ""
+
+
+def test_self_repo_is_not_reanalyzed_after_bot_push(tmp_path, remote):
+    gh = FakeGitHub([_meta("repo-atlas", 0)])
+    _pipeline(_settings(tmp_path, remote), gh, FakeLLM()).run()
+    # bot の push で GitHub 上の HEAD は変わるが、コードは変わっていない
+    gh.heads["repo-atlas"] = "sha-repo-atlas-2"
+    llm = FakeLLM()
+    _pipeline(_settings(tmp_path, remote), gh, llm).run()
+    assert llm.analyzed == []
 
 
 def test_dry_run_does_not_push(tmp_path, remote):
