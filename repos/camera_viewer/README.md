@@ -1,0 +1,16 @@
+# camera_viewer
+
+🔒 非公開リポジトリ
+
+## 概要
+
+RTSP対応カメラ4台の映像をHLS変換し、ブラウザで2×2グリッド表示する監視システム。
+
+## 更新情報
+
+- 最終更新日: 2025-12-12
+- 最後にマージされた改修: 2025-12-12 Fix markdown link formatting in README.md
+
+---
+
+[← 一覧に戻る](../../README.md) ・ このページは [repo-atlas](../../README.md) が自動生成しています。
