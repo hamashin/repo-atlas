@@ -1,0 +1,10 @@
+# リポジトリごとの公開レベル
+#   full    : 概要・主な機能・技術スタック・構成図 (SVG) を掲載
+#   summary : 概要文のみ掲載
+#   hidden  : 掲載しない (名前も出さない。LLM にも渡さない)
+# ここに無いリポジトリは .env の DEFAULT_LEVEL が適用される。
+# 実運用のファイルは公開リポジトリに置かず、ホストの ~/.config/repo-atlas/repos.yaml に置く。
+repos:
+  repo-atlas: full
+  example-router-config: hidden
+  example-app: summary

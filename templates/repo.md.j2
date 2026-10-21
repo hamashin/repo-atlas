@@ -1,0 +1,41 @@
+# {{ page.name }}
+
+{{ "🌐 公開リポジトリ" if page.public else "🔒 非公開リポジトリ" }}{{ " / 🗄️ アーカイブ済み" if page.archived else "" }}
+
+## 概要
+
+{{ page.summary|text }}
+{% if page.level == "full" %}
+{% if page.features %}
+
+## 主な機能
+
+{% for f in page.features %}
+- {{ f|text }}
+{% endfor %}
+{% endif %}
+{% if page.tech_stack %}
+
+## 技術スタック
+
+{{ page.tech_stack|map("text")|join(" / ") }}
+{% endif %}
+{% if page.has_diagram %}
+
+## 構成図
+
+![{{ page.name }} の構成図](architecture.svg)
+{% endif %}
+{% endif %}
+
+## 更新情報
+
+- 最終更新日: {{ page.updated }}
+- 最後にマージされた改修: {{ page.merged|text }}
+{% if page.html_url %}
+- GitHub: {{ page.html_url }}
+{% endif %}
+
+---
+
+[← 一覧に戻る](../../README.md) ・ このページは [repo-atlas](../../README.md) が自動生成しています。

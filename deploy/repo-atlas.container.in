@@ -1,0 +1,24 @@
+# install.sh が生成する。直接編集せず .env を変えて install.sh を再実行すること。
+[Unit]
+Description=repo-atlas: リポジトリ目録の自動生成
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image=@IMAGE_NAME@
+Pull=never
+ContainerName=repo-atlas
+EnvironmentFile=@ENV_FILE@
+Volume=@HOST_DATA_DIR@:/data:Z
+Volume=@CONFIG_DIR@/repos.yaml:/config/repos.yaml:ro,Z
+Volume=@CONFIG_DIR@/deploy_key:/run/secrets/deploy_key:ro,Z
+Volume=@CONFIG_DIR@/github_known_hosts:/run/secrets/known_hosts:ro,Z
+Exec=run
+
+[Service]
+Type=oneshot
+TimeoutStartSec=@RUN_TIMEOUT_SEC@
+# 75 = 未解析分が残った (正常扱い。フックが続きを予約する)
+SuccessExitStatus=75
+# 再実行・続きの実行・失敗通知はフックが担当する
+ExecStopPost=-@HOOK@ @ENV_FILE@
