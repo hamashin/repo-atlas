@@ -3,9 +3,6 @@
 Description=repo-atlas: リポジトリ目録の自動生成
 Wants=network-online.target
 After=network-online.target
-# 定期実行 1 回 + 失敗時の再実行 1 回まで
-StartLimitIntervalSec=@START_LIMIT_INTERVAL@
-StartLimitBurst=2
 
 [Container]
 Image=@IMAGE_NAME@
@@ -21,6 +18,7 @@ Exec=run
 [Service]
 Type=oneshot
 TimeoutStartSec=@RUN_TIMEOUT_SEC@
-Restart=on-failure
-RestartSec=@RETRY_DELAY_SEC@
+# 75 = 未解析分が残った (正常扱い。フックが続きを予約する)
+SuccessExitStatus=75
+# 再実行・続きの実行・失敗通知はフックが担当する
 ExecStopPost=-@HOOK@ @ENV_FILE@

@@ -59,10 +59,20 @@ def test_render_pages():
 
 def test_store_migrate_and_roundtrip(tmp_path):
     store = StateStore(tmp_path / "s.db", ROOT / "migrations")
-    assert store.migrate() == ["0001_init"]
+    assert store.migrate() == ["0001_init", "0002_attempts"]
     assert store.migrate() == []
     store.save(RepoState("demo", "abc", "full", "1", {"summary": "x"}, "pr:1", "line"))
     got = store.get("demo")
     assert got.analysis == {"summary": "x"} and got.last_merged_key == "pr:1"
     store.delete("demo")
     assert store.get("demo") is None
+
+
+def test_store_attempts(tmp_path):
+    store = StateStore(tmp_path / "s.db", ROOT / "migrations")
+    store.migrate()
+    store.record_attempt("demo", ok=False)
+    store.record_attempt("demo", ok=False)
+    assert store.attempts()["demo"][0] == 2
+    store.record_attempt("demo", ok=True)
+    assert store.attempts()["demo"][0] == 0

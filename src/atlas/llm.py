@@ -108,7 +108,7 @@ class OllamaClient:
     def _prompt(self, name: str) -> str:
         return (self._prompts_dir / name).read_text(encoding="utf-8")
 
-    def _chat(self, system: str, user: str, schema: dict) -> dict:
+    def _chat(self, system: str, user: str, schema: dict, timeout: float | None) -> dict:
         payload = {
             "model": self._model,
             "stream": False,
@@ -118,30 +118,31 @@ class OllamaClient:
         }
         if self._disable_think:
             payload["think"] = False
-        last_error = None
-        for _ in range(2):
-            try:
-                resp = requests.post(self._url, json=payload, timeout=self._timeout)
-            except requests.RequestException as exc:
-                raise LLMError(f"Ollama に接続できません: {type(exc).__name__}") from exc
-            if resp.status_code != 200:
-                raise LLMError(f"Ollama がエラーを返しました ({resp.status_code})")
-            try:
-                return json.loads(resp.json()["message"]["content"])
-            except (KeyError, ValueError) as exc:
-                last_error = exc
-        raise LLMError(f"Ollama の出力を JSON として解釈できません: {last_error}")
+        # stream=False の応答は完了まで 1 バイトも返らないため、読み取りタイムアウト = 処理全体の上限になる
+        read_timeout = min(timeout or self._timeout, self._timeout)
+        try:
+            resp = requests.post(self._url, json=payload, timeout=(10, read_timeout))
+        except requests.Timeout as exc:
+            raise LLMError(f"Ollama の応答が {int(read_timeout)} 秒以内に返りませんでした") from exc
+        except requests.RequestException as exc:
+            raise LLMError(f"Ollama に接続できません: {type(exc).__name__}") from exc
+        if resp.status_code != 200:
+            raise LLMError(f"Ollama がエラーを返しました ({resp.status_code})")
+        try:
+            return json.loads(resp.json()["message"]["content"])
+        except (KeyError, ValueError) as exc:
+            raise LLMError(f"Ollama の出力を JSON として解釈できません: {type(exc).__name__}") from exc
 
-    def analyze(self, repo_name: str, description: str, source_text: str) -> dict:
+    def analyze(self, repo_name: str, description: str, source_text: str, timeout: float | None = None) -> dict:
         user = (
             f"# リポジトリ名\n{repo_name}\n\n# GitHub 上の説明\n{description or '(なし)'}\n\n"
             f"# ソース (機密情報はマスク済み)\n{source_text}"
         )
-        return normalize_analysis(self._chat(self._prompt("analyze.txt"), user, ANALYSIS_SCHEMA))
+        return normalize_analysis(self._chat(self._prompt("analyze.txt"), user, ANALYSIS_SCHEMA, timeout))
 
-    def summarize_merge(self, repo_name: str, title: str, body: str) -> str:
+    def summarize_merge(self, repo_name: str, title: str, body: str, timeout: float | None = None) -> str:
         user = f"# リポジトリ名\n{repo_name}\n\n# タイトル\n{title}\n\n# 本文\n{body or '(なし)'}"
-        return _clip(self._chat(self._prompt("merge_line.txt"), user, MERGE_SCHEMA).get("line"), 80)
+        return _clip(self._chat(self._prompt("merge_line.txt"), user, MERGE_SCHEMA, timeout).get("line"), 80)
 
     def ping(self) -> list[str]:
         resp = requests.get(self._url.replace("/api/chat", "/api/tags"), timeout=10)

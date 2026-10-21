@@ -1,9 +1,10 @@
 """python -m atlas [run|migrate|check]
 
 終了コード:
-  0 正常 (公開見送り・持ち越しがあっても通知済みなら 0)
-  1 致命的エラー (systemd 側で通知・再実行)
-  3 一部失敗。通知はアプリ側で済んでいる (systemd 側では再実行のみ)
+  0 正常 (公開見送りがあっても通知済みなら 0)
+  1 致命的エラー (フック側で通知し、30 分後に 1 回だけ再実行)
+  3 一部失敗。通知はアプリ側で済んでいる (フック側では 30 分後の再実行のみ)
+  75 未解析のリポジトリが残っている (フック側で続きをすぐ実行する)
 """
 
 from __future__ import annotations
@@ -17,6 +18,7 @@ from .settings import Settings, SettingsError
 EXIT_OK = 0
 EXIT_FATAL = 1
 EXIT_REPORTED_FAILURE = 3
+EXIT_BACKLOG = 75
 
 
 def _cmd_migrate(settings: Settings) -> int:
@@ -71,7 +73,9 @@ def _cmd_run(settings: Settings) -> int:
 
     report = Pipeline(settings).run()
     logging.info(report.message(settings.dry_run))
-    return EXIT_REPORTED_FAILURE if report.retryable_failure else EXIT_OK
+    if report.retryable_failure:
+        return EXIT_REPORTED_FAILURE
+    return EXIT_BACKLOG if report.has_backlog else EXIT_OK
 
 
 def main(argv: list[str] | None = None) -> int:

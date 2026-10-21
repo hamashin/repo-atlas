@@ -47,6 +47,7 @@ class Settings:
     min_listing_ratio: float
     tz: str
     run_deadline_sec: int
+    min_llm_sec: int
     dry_run: bool
     data_dir: Path
     app_dir: Path
@@ -119,6 +120,7 @@ class Settings:
             min_listing_ratio=float(opt("MIN_LISTING_RATIO", "0.5")),
             tz=opt("TZ", "Asia/Tokyo"),
             run_deadline_sec=int(opt("RUN_DEADLINE_SEC", "1080")),
+            min_llm_sec=int(opt("MIN_LLM_SEC", "300")),
             dry_run=_bool(opt("DRY_RUN", "false")),
             data_dir=Path(opt("DATA_DIR", "/data")),
             app_dir=Path(opt("APP_DIR", "/app")),

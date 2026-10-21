@@ -102,6 +102,22 @@ class StateStore:
         with self._conn:
             self._conn.execute("DELETE FROM repos WHERE name = ?", (name,))
 
+    def attempts(self) -> dict[str, tuple[int, str]]:
+        """name -> (連続失敗回数, 最終試行日時)"""
+        return {
+            r["name"]: (r["failures"], r["last_attempt_at"])
+            for r in self._conn.execute("SELECT name, failures, last_attempt_at FROM attempts")
+        }
+
+    def record_attempt(self, name: str, ok: bool) -> None:
+        with self._conn:
+            self._conn.execute(
+                "INSERT INTO attempts (name, last_attempt_at, failures) VALUES (?, ?, ?)"
+                " ON CONFLICT(name) DO UPDATE SET last_attempt_at=excluded.last_attempt_at,"
+                " failures=CASE WHEN ? THEN 0 ELSE attempts.failures + 1 END",
+                (name, _now(), 0 if ok else 1, ok),
+            )
+
     def start_run(self) -> int:
         with self._conn:
             cur = self._conn.execute("INSERT INTO runs (started_at) VALUES (?)", (_now(),))

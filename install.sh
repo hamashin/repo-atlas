@@ -42,7 +42,7 @@ podman_run_args() {
 }
 
 # ---- 1. 前提 ----
-for cmd in podman systemctl ssh-keygen curl python3 grep sed; do
+for cmd in podman systemctl systemd-run ssh-keygen curl python3 grep sed; do
   command -v "$cmd" >/dev/null 2>&1 || die "$cmd が見つかりません"
 done
 [ "$(id -u)" -ne 0 ] || die "root ではなく実行ユーザーで実行してください (rootless podman)"
@@ -99,13 +99,11 @@ HOST_DATA_DIR="${HOST_DATA_DIR:-$HOME/.local/share/repo-atlas}"
 IMAGE_NAME="$(env_value IMAGE_NAME)"
 SCHEDULE_ONCALENDAR="$(env_value SCHEDULE_ONCALENDAR)"
 RUN_TIMEOUT_SEC="$(env_value RUN_TIMEOUT_SEC)"
-RETRY_DELAY_SEC="$(env_value RETRY_DELAY_SEC)"
 GITLEAKS_VERSION="$(env_value GITLEAKS_VERSION)"
 GITLEAKS_SHA256="$(env_value GITLEAKS_SHA256)"
-for v in IMAGE_NAME SCHEDULE_ONCALENDAR RUN_TIMEOUT_SEC RETRY_DELAY_SEC GITLEAKS_VERSION GITLEAKS_SHA256; do
+for v in IMAGE_NAME SCHEDULE_ONCALENDAR RUN_TIMEOUT_SEC GITLEAKS_VERSION GITLEAKS_SHA256; do
   [ -n "${!v}" ] || die "$v が .env に設定されていません"
 done
-START_LIMIT_INTERVAL=$(( RETRY_DELAY_SEC + RUN_TIMEOUT_SEC * 2 + 600 ))
 mkdir -p "$HOST_DATA_DIR"
 chmod 700 "$HOST_DATA_DIR"
 
@@ -140,8 +138,6 @@ render() {
       -e "s|@HOST_DATA_DIR@|$HOST_DATA_DIR|g" \
       -e "s|@CONFIG_DIR@|$CONFIG_DIR|g" \
       -e "s|@RUN_TIMEOUT_SEC@|$RUN_TIMEOUT_SEC|g" \
-      -e "s|@RETRY_DELAY_SEC@|$RETRY_DELAY_SEC|g" \
-      -e "s|@START_LIMIT_INTERVAL@|$START_LIMIT_INTERVAL|g" \
       -e "s|@SCHEDULE_ONCALENDAR@|$SCHEDULE_ONCALENDAR|g" \
       -e "s|@HOOK@|$HOOK_DIR/notify-failure.sh|g" \
       "$1"

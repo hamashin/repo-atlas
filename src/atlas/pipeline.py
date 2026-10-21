@@ -44,22 +44,28 @@ class RunReport:
     blocked: list[tuple[str, str]] = field(default_factory=list)
     errors: list[tuple[str, str]] = field(default_factory=list)
     deferred: list[str] = field(default_factory=list)
+    analyzed: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
     pushed: bool = False
+
+    @property
+    def has_backlog(self) -> bool:
+        return bool(self.deferred)
 
     @property
     def retryable_failure(self) -> bool:
         return bool(self.errors)
 
     def needs_notice(self) -> bool:
-        return self.pushed or bool(self.blocked or self.errors or self.deferred or self.notes)
+        # 持ち越しだけなら続きを自動実行するので通知しない
+        return self.pushed or bool(self.blocked or self.errors or self.notes)
 
     def message(self, dry_run: bool) -> str:
         head = "repo-atlas: 更新しました" if self.pushed else "repo-atlas: 実行結果"
         if dry_run:
             head += " (DRY_RUN: push していません)"
         lines = [head]
-        for label, items in (("追加", self.added), ("更新", self.updated), ("削除", self.removed), ("次回に持ち越し", self.deferred)):
+        for label, items in (("追加", self.added), ("更新", self.updated), ("削除", self.removed), ("続きの実行に持ち越し", self.deferred)):
             if items:
                 lines.append(f"• {label} {len(items)} 件: {', '.join(items)}")
         for name, kinds in self.blocked:
@@ -68,7 +74,7 @@ class RunReport:
             lines.append(f"• :x: エラー: {name}: {msg}")
         lines.extend(f"• {n}" for n in self.notes)
         if self.errors:
-            lines.append("失敗があるため、30 分後に 1 回だけ再実行されます (再実行中の場合は次回定期実行)。")
+            lines.append("失敗があるため、30 分後に 1 回だけ再実行します (再実行でも失敗した場合は翌日の定期実行で再挑戦)。")
         return "\n".join(lines)
 
 
@@ -82,6 +88,16 @@ def load_levels(path: Path, default: str) -> dict[str, str]:
             raise SettingsError(f"repos.yaml の公開レベルが不正です: {name}: {level}")
         levels[str(name)] = level
     return levels
+
+
+class Budget:
+    """1 回の実行の持ち時間。コンテナのタイムアウトより短い RUN_DEADLINE_SEC で区切る。"""
+
+    def __init__(self, deadline_sec: int):
+        self._deadline = time.monotonic() + deadline_sec
+
+    def remaining(self) -> float:
+        return self._deadline - time.monotonic()
 
 
 class Pipeline:
@@ -115,7 +131,7 @@ class Pipeline:
             raise BlockedError(findings)
 
     def _merge_line(
-        self, repo: RepoMeta, merge: MergeInfo | None, prev: RepoState | None, allow_llm: bool
+        self, repo: RepoMeta, merge: MergeInfo | None, prev: RepoState | None, budget: Budget
     ) -> tuple[str | None, str]:
         if merge is None:
             return None, "なし"
@@ -123,27 +139,34 @@ class Pipeline:
             return merge.key, prev.last_merged_line
         title = self.sanitizer.mask(merge.title)
         line = ""
-        if allow_llm:
+        summarized = False
+        if budget.remaining() >= self.s.min_llm_sec:
             try:
-                line = self.llm.summarize_merge(repo.name, title, self.sanitizer.mask(merge.body))
+                line = self.llm.summarize_merge(
+                    repo.name, title, self.sanitizer.mask(merge.body), timeout=budget.remaining()
+                )
+                summarized = bool(line)
             except LLMError:
                 line = ""
         if not line or self.sanitizer.scan(line, "merge"):
-            line = title
+            line, summarized = title, False
         if self.sanitizer.scan(line, "merge"):
             line = "(非公開の内容)"
-        return merge.key, f"{self._date(merge.merged_at)} {line}"
+        # タイトルで代用した場合はキーを保存せず、時間のある実行で要約し直す
+        return (merge.key if summarized else None), f"{self._date(merge.merged_at)} {line}"
 
-    def _analyze(self, repo: RepoMeta, head_sha: str) -> dict:
+    def _analyze(self, repo: RepoMeta, head_sha: str, budget: Budget) -> dict:
         self.s.tmp_dir.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=self.s.tmp_dir) as tmp:
             tarball = Path(tmp) / "src.tar.gz"
             self.github.download_tarball(repo, head_sha, tarball, self.s.max_tarball_bytes)
             source = self.collector.collect(tarball, Path(tmp))
-        return self.llm.analyze(repo.name, self.sanitizer.mask(repo.description), source.as_prompt())
+        prompt = source.as_prompt()
+        self._log.info("%s: Ollama で解析中 (入力 %d 文字、上限 %d 秒)", repo.name, len(prompt), budget.remaining())
+        return self.llm.analyze(repo.name, self.sanitizer.mask(repo.description), prompt, timeout=budget.remaining())
 
     # ---- リポジトリ 1 件 ----
-    def _process(self, repo: RepoMeta, level: str, allow_llm: bool, report: RunReport) -> IndexEntry:
+    def _process(self, repo: RepoMeta, level: str, budget: Budget, report: RunReport) -> IndexEntry:
         prev = self.store.get(repo.name)
         head = self.github.head_sha(repo)
         analysis = prev.analysis if prev else None
@@ -152,20 +175,30 @@ class Pipeline:
         stale = analysis is None or analyzed_sha != head or version != GENERATOR_VERSION
 
         if stale and head is not None:
-            if allow_llm:
+            # 1 回の実行で最低 1 件は必ず解析する (遅くても止まらずに進める)
+            if budget.remaining() >= self.s.min_llm_sec or not report.analyzed:
+                report.analyzed.append(repo.name)
+                started = time.monotonic()
                 try:
-                    analysis = self._analyze(repo, head)
+                    analysis = self._analyze(repo, head, budget)
                     analyzed_sha, version = head, GENERATOR_VERSION
+                    self.store.record_attempt(repo.name, ok=True)
+                    self._log.info("%s: 解析完了 (%d 秒)", repo.name, time.monotonic() - started)
                 except LLMError as exc:
+                    self.store.record_attempt(repo.name, ok=False)
                     report.errors.append((repo.name, str(exc)))
+                    self._log.warning("%s: 解析失敗 (%s)", repo.name, exc)
             else:
                 report.deferred.append(repo.name)
+                self._log.info("%s: 残り時間が少ないため続きの実行に持ち越し", repo.name)
+        else:
+            self._log.info("%s: 変更なし", repo.name)
         saved_analysis = analysis
         if analysis is None:
             fallback = self.sanitizer.mask(repo.description) or ("(コミットなし)" if head is None else "(解析待ち)")
             analysis = {"summary": fallback, "features": [], "tech_stack": [], "components": [], "relations": []}
 
-        merge_key, merge_line = self._merge_line(repo, self.github.last_merged(repo, head), prev, allow_llm)
+        merge_key, merge_line = self._merge_line(repo, self.github.last_merged(repo, head), prev, budget)
 
         page = RepoPage(
             name=repo.name,
@@ -237,11 +270,12 @@ class Pipeline:
 
     # ---- 全体 ----
     def run(self) -> RunReport:
-        started = time.monotonic()
+        budget = Budget(self.s.run_deadline_sec)
         report = RunReport()
+        self.store.migrate()
         run_id = self.store.start_run()
         try:
-            self._run(report, started)
+            self._run(report, budget)
             status = "error" if report.errors else "ok"
         except Exception as exc:
             self.store.finish_run(run_id, "fatal", type(exc).__name__)
@@ -251,8 +285,7 @@ class Pipeline:
             self.notifier.send(report.message(self.s.dry_run))
         return report
 
-    def _run(self, report: RunReport, started: float) -> None:
-        self.store.migrate()
+    def _run(self, report: RunReport, budget: Budget) -> None:
         levels = load_levels(self.s.repos_config_path, self.s.default_level)
         repos = self.github.list_repos(self.s.github_owner)
         self.workspace.sync()
@@ -265,13 +298,17 @@ class Pipeline:
         visible_names = {r.name for r in visible}
         before = self.workspace.listed_names()
 
+        # 解析に失敗し続けているリポジトリは後回しにして、他の処理を止めない
+        attempts = self.store.attempts()
+        order = sorted(visible, key=lambda r: attempts.get(r.name, (0, ""))[0])
+        self._log.info("対象 %d 件 (非表示 %d 件)", len(visible), len(repos) - len(visible))
+
         entries = []
-        for repo in visible:
+        for i, repo in enumerate(order, 1):
             level = levels.get(repo.name, self.s.default_level)
-            remaining = self.s.run_deadline_sec - (time.monotonic() - started)
-            allow_llm = remaining > self.s.ollama_timeout_sec * 2
+            self._log.info("[%d/%d] %s (%s)", i, len(order), repo.name, level)
             try:
-                entries.append(self._process(repo, level, allow_llm, report))
+                entries.append(self._process(repo, level, budget, report))
             except BlockedError as exc:
                 self._log.warning("公開見送り: %s (%s)", repo.name, exc)
                 report.blocked.append((repo.name, str(exc)))
@@ -298,6 +335,8 @@ class Pipeline:
             if name not in existing_names:
                 self.store.delete(name)
 
+        rank = {r.name: i for i, r in enumerate(visible)}
+        entries.sort(key=lambda e: rank[e.name])
         index = self.renderer.index(self.s.github_owner, entries, datetime.now(self._tz))
         self._scan(index, INDEX_FILE)
         self.workspace.write(INDEX_FILE, index)
@@ -317,3 +356,4 @@ class Pipeline:
             f"(追加 {len(report.added)} / 更新 {len(report.updated)} / 削除 {len(report.removed)})"
         )
         report.pushed = self.workspace.commit_and_push(message, self.s.dry_run)
+        self._log.info("push: %s", "あり" if report.pushed else "変更なし")
