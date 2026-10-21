@@ -26,7 +26,7 @@ Python / podman / SQLite / Ollama / Jinja2 / Graphviz / gitleaks / Slack API / G
 ## 更新情報
 
 - 最終更新日: 2026-10-21
-- 最後にマージされた改修: 2026-10-21 ログの重複、DRY_RUN時の表示、続き実行中の通知を修正
+- 最後にマージされた改修: 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加
 
 ---
 
