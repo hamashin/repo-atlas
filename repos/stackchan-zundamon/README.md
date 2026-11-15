@@ -9,7 +9,7 @@ PrometheusアラートやSlack投稿、気象・地震情報をM5Stack機器でV
 ## 更新情報
 
 - 最終更新日: 2026-11-15
-- 最後にマージされた改修: 2026-11-15 voicevox: ヘルスチェックを curl から bash の /dev/tcp に変更
+- 最後にマージされた改修: 2026-11-15 voicevoxのヘルスチェックをbashの/dev/tcpに修正
 
 ---
 

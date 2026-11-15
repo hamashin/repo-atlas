@@ -15,17 +15,17 @@ hamashin の GitHub リポジトリ (大半は非公開) が、それぞれ何�
 
 ## リポジトリ一覧
 
-24 件 (最終生成: 2026-11-16 08:14 JST)
+24 件 (最終生成: 2026-11-16 08:32 JST)
 
 | リポジトリ | 概要 | 最終更新日 | 最後にマージされた改修 |
 |---|---|---|---|
+| [repo-atlas](repos/repo-atlas/) 🌐 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-11-16 | 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加 |
 | [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成を自動収集し、可視化されたネットワーク図と詳細な機器一覧を生成するツールです。 | 2026-11-16 | 2026-11-16 netmapの構成変更検出機能を追加 |
 | [homelab-energy](repos/homelab-energy/) 🔒 | スマートプラグとサーバーの電力データを収集し、Home Assistant経由でPrometheus/Grafanaに連携して電気代を可視化する。 | 2026-11-16 | 2026-11-15 電気代の可視化基盤と自動復旧・通知機能を追加 |
-| [stackchan-zundamon](repos/stackchan-zundamon/) 🔒 | PrometheusアラートやSlack投稿、気象・地震情報をM5Stack機器でVOICEVOX音声として読み上げるシステム。 | 2026-11-15 | 2026-11-15 voicevox: ヘルスチェックを curl から bash の /dev/tcp に変更 |
-| [homelab-vault](repos/homelab-vault/) 🔒 | 自宅ラボで1Passwordの代替として、Vaultwardenによるパスワード管理とAIエージェント向けの秘密情報仲介を実現する。 | 2026-11-15 | 2026-11-15 tools/adguard.py: 登録済みの IP を変える update を追加 |
+| [stackchan-zundamon](repos/stackchan-zundamon/) 🔒 | PrometheusアラートやSlack投稿、気象・地震情報をM5Stack機器でVOICEVOX音声として読み上げるシステム。 | 2026-11-15 | 2026-11-15 voicevoxのヘルスチェックをbashの/dev/tcpに修正 |
+| [homelab-vault](repos/homelab-vault/) 🔒 | 自宅ラボのパスワード管理と、AIエージェント向けの秘密情報安全な受け渡しを実現する。 | 2026-11-15 | 2026-11-15 AdGuard の登録済みドメイン IP 更新機能を追加 |
 | [homelab-siem](repos/homelab-siem/) 🔒 | 自宅環境のログをWazuhで集約し、ローカルLLMで分析してSlackに通知するSIEM基盤。 | 2026-11-15 | 2026-11-15 docs: suricata の IP と版を更新 |
-| [auto-remediator](repos/auto-remediator/) 🔒 | Prometheus アラートを契機にローカル LLM で自動調査し、Slack 承認を経て復旧する仕組み。 | 2026-11-15 | 2026-11-15 fix: tbot の停止を失敗として通知しない |
-| [repo-atlas](repos/repo-atlas/) 🌐 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-11-15 | 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加 |
+| [auto-remediator](repos/auto-remediator/) 🔒 | Prometheusアラートを契機にローカルLLMで障害を自動調査し、Slack承認を経て復旧する仕組み。 | 2026-11-15 | 2026-11-15 fix: tbot の停止を失敗として通知しない |
 | [homelab-teleport](repos/homelab-teleport/) 🔒 | 自宅環境のSSH接続をTeleportの短命証明書認証に置き換え、固定鍵のリスクを低減する。 | 2026-11-11 | 2026-10-19 バージョンを20261019155240に更新 |
 | [camrec](repos/camrec/) 🔒 | 監視カメラの映像をブラウザでリアルタイム表示し、指定カメラの録画データをNASへ自動保存するシステム。 | 2026-11-11 | 2026-06-22 RTSPリレーのハング防止にタイムアウトを追加 |
 | [home-heartbeat](repos/home-heartbeat/) 🔒 | 自宅サーバの死活監視を、外部サービスへの定期送信のみで実現する。受信ポートを開けずにダウンを検知できる。 | 2026-10-20 | 2026-10-20 Healthchecks.io による push 型死活監視機能を追加 |
