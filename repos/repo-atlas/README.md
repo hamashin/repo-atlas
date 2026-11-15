@@ -1,6 +1,6 @@
 # repo-atlas
 
-🔒 非公開リポジトリ
+🌐 公開リポジトリ
 
 ## 概要
 
@@ -25,8 +25,9 @@ Python / podman / SQLite / Ollama / Jinja2 / Graphviz / gitleaks / Slack API / G
 
 ## 更新情報
 
-- 最終更新日: 2026-11-14
+- 最終更新日: 2026-11-15
 - 最後にマージされた改修: 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加
+- GitHub: https://github.com/hamashin/repo-atlas
 
 ---
 

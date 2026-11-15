@@ -4,12 +4,12 @@
 
 ## 概要
 
-PrometheusアラートとSlack投稿を、M5StackデバイスがVOICEVOX音声で読み上げるシステム。
+PrometheusアラートやSlack投稿、気象・地震情報をM5Stack機器でVOICEVOX音声として読み上げるシステム。
 
 ## 更新情報
 
-- 最終更新日: 2026-10-14
-- 最後にマージされた改修: 2026-10-13 M5Stack BasicのWi-Fi単体動作と設定埋め込みを追加
+- 最終更新日: 2026-11-15
+- 最後にマージされた改修: 2026-11-15 voicevox: ヘルスチェックを curl から bash の /dev/tcp に変更
 
 ---
 
