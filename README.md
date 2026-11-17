@@ -15,13 +15,13 @@ hamashin の GitHub リポジトリ (大半は非公開) が、それぞれ何�
 
 ## リポジトリ一覧
 
-24 件 (最終生成: 2026-11-17 08:03 JST)
+24 件 (最終生成: 2026-11-18 08:03 JST)
 
 | リポジトリ | 概要 | 最終更新日 | 最後にマージされた改修 |
 |---|---|---|---|
-| [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成を自動収集し、可視化されたネットワーク図と詳細な機器一覧を生成するツールです。 | 2026-11-17 | 2026-11-17 netmapの構成変更検出機能を追加 |
+| [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成と接続関係を可視化し、Proxmox環境のインベントリを自動生成するツールです。 | 2026-11-18 | 2026-11-18 netmap の構成変更検出機能を追加 |
+| [repo-atlas](repos/repo-atlas/) 🌐 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-11-17 | 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加 |
 | [homelab-energy](repos/homelab-energy/) 🔒 | スマートプラグとサーバーの電力データを収集し、Home Assistant経由でPrometheus/Grafanaに連携して電気代を可視化する。 | 2026-11-16 | 2026-11-15 電気代の可視化基盤と自動復旧・通知機能を追加 |
-| [repo-atlas](repos/repo-atlas/) 🌐 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-11-16 | 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加 |
 | [stackchan-zundamon](repos/stackchan-zundamon/) 🔒 | PrometheusアラートやSlack投稿、気象・地震情報をM5Stack機器でVOICEVOX音声として読み上げるシステム。 | 2026-11-15 | 2026-11-15 voicevoxのヘルスチェックをbashの/dev/tcpに修正 |
 | [homelab-vault](repos/homelab-vault/) 🔒 | 自宅ラボのパスワード管理と、AIエージェント向けの秘密情報安全な受け渡しを実現する。 | 2026-11-15 | 2026-11-15 AdGuard の登録済みドメイン IP 更新機能を追加 |
 | [homelab-siem](repos/homelab-siem/) 🔒 | 自宅ラボのログをWazuhで集約し、ローカルLLMで分析してSlackに通知するSIEM環境を構築・運用するためのリポジトリ。 | 2026-11-15 | 2026-11-15 suricata の IP と版のドキュメント情報を更新 |
