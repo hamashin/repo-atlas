@@ -15,18 +15,18 @@ hamashin の GitHub リポジトリ (大半は非公開) が、それぞれ何�
 
 ## リポジトリ一覧
 
-26 件 (最終生成: 2026-11-23 08:03 JST)
+26 件 (最終生成: 2026-11-24 08:07 JST)
 
 | リポジトリ | 概要 | 最終更新日 | 最後にマージされた改修 |
 |---|---|---|---|
-| [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成を自動収集し、可視化されたネットワーク図と詳細な機器一覧を生成するツール。 | 2026-11-23 | 2026-11-23 netmap の構成変更検出機能を追加 |
-| [repo-atlas](repos/repo-atlas/) 🌐 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-11-22 | 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加 |
-| [claude-memory](repos/claude-memory/) 🔒 | Claude Code のプロジェクト別メモリーを毎日自動バックアップし、秘密情報の混入を検知して安全に Git へ保存する仕組みを提供します。 | 2026-11-19 | 2026-11-19 メモリファイルを更新 |
+| [home-netmap](repos/home-netmap/) 🔒 | 自宅LANの機器構成と接続関係を自動収集し、可視化されたネットワーク図と詳細な機器一覧を生成するツールです。 | 2026-11-24 | 2026-11-24 netmapの構成変更検出機能を追加 |
+| [claude-memory](repos/claude-memory/) 🔒 | Claude Code のプロジェクト別メモリーを毎日自動バックアップし、秘密情報の混入を検出・通知する仕組みを提供します。 | 2026-11-24 | 2026-11-24 メモリファイルを更新 |
+| [homelab-siem](repos/homelab-siem/) 🔒 | 自宅ラボのログをWazuhで集約し、ローカルLLMで分析してSlackに通知するSIEM環境を構築・運用するためのリポジトリ。 | 2026-11-23 | 2026-11-15 suricata の IP と版のドキュメント情報を更新 |
+| [repo-atlas](repos/repo-atlas/) 🌐 | 非公開GitHubリポジトリのソースをローカルLLMで解析し、機密情報を除去した概要と構成図を毎日自動生成・公開する目録ツール。 | 2026-11-23 | 2026-10-21 再解析ループを修正し、AWS ARNとアカウントIDのマスク機能を追加 |
 | [homelab-energy](repos/homelab-energy/) 🔒 | スマートプラグとサーバーの電力データを収集し、Home Assistant経由でPrometheusに蓄積して電気代を可視化する。 | 2026-11-19 | 2026-11-19 ダッシュボードパネルの名称を統一し、再実行時の位置・サイズ・タイトルの保持機能を追加 |
 | [homelab-vault](repos/homelab-vault/) 🔒 | 自宅環境のパスワード管理と、AIエージェントが秘密情報を見ずに利用するための仲介基盤を提供する。 | 2026-11-19 | 2026-11-19 secret-broker に .env のバックアップ・復元機能を追加 |
 | [local-llm-stack](repos/local-llm-stack/) 🔒 | ローカルLLM環境で、メタ検索とチャットUIをコンテナ化して統合運用するためのセットアップツールです。 | 2026-11-19 | 2026-11-19 .gitignore に .env とログの除外設定を追加 |
 | [stackchan-zundamon](repos/stackchan-zundamon/) 🔒 | PrometheusアラートやSlack投稿、気象・地震情報をM5Stack機器でVOICEVOX音声として読み上げるシステム。 | 2026-11-15 | 2026-11-15 voicevoxのヘルスチェックをbashの/dev/tcpに修正 |
-| [homelab-siem](repos/homelab-siem/) 🔒 | 自宅ラボのログをWazuhで集約し、ローカルLLMで分析してSlackに通知するSIEM環境を構築・運用するためのリポジトリ。 | 2026-11-15 | 2026-11-15 suricata の IP と版のドキュメント情報を更新 |
 | [auto-remediator](repos/auto-remediator/) 🔒 | Prometheusアラートを契機にローカルLLMで障害を自動調査し、Slack承認を経て復旧する仕組み。 | 2026-11-15 | 2026-11-15 tbot の停止を失敗とみなさないよう設定し、通知ロジックを修正 |
 | [homelab-teleport](repos/homelab-teleport/) 🔒 | 自宅環境のSSH接続をTeleportの短命証明書認証に置き換え、固定鍵のリスクを低減する。 | 2026-11-11 | 2026-10-19 バージョンを20261019155240に更新 |
 | [camrec](repos/camrec/) 🔒 | 監視カメラの映像をブラウザでリアルタイム表示し、指定カメラの録画データをNASへ自動保存するシステム。 | 2026-11-11 | 2026-06-22 RTSPリレーのハング防止にタイムアウトを追加 |
